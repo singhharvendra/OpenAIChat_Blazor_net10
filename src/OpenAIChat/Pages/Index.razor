@@ -1,0 +1,101 @@
+@page "/"
+@using Microsoft.JSInterop
+@using Microsoft.AspNetCore.Components.Web
+@inject ChatService ChatSvc
+@implements IDisposable
+
+<h1>Chat</h1>
+
+<div class="chat-wrap">
+    <div class="chat-window" @ref="ChatWindowRef">
+        @foreach (var m in Messages)
+        {
+            <div class="msg @(m.role == "user" ? "user" : "assistant")">
+                <div class="bubble">
+                    @m.content
+                </div>
+            </div>
+        }
+        @if (IsThinking)
+        {
+            <div class="msg assistant thinking">
+                <div class="bubble">…thinking…</div>
+            </div>
+        }
+    </div>
+
+    <div class="composer">
+        <textarea id="composerBox" rows="2" placeholder="Type a message…"
+                  @bind="Draft" @bind:event="oninput"></textarea>
+        <button class="btn send" @onclick="SendAsync" disabled="@string.IsNullOrWhiteSpace(Draft)">Send</button>
+    </div>
+</div>
+
+@code {
+    ElementReference ChatWindowRef;
+    string Draft = "";
+    bool IsThinking = false;
+
+    List<ChatService.ChatMessage> Messages = new()
+    {
+        new("system", "You are a helpful, concise assistant."),
+        new("assistant", "Hi! Ask me anything.")
+    };
+
+    [Inject] IJSRuntime JS { get; set; } = default!;
+    private DotNetObjectReference<Index>? _dotRef;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // Wire up: Enter sends, Shift+Enter inserts newline
+            _dotRef = DotNetObjectReference.Create(this);
+            await JS.InvokeVoidAsync("chatWireUpEnter", "#composerBox", _dotRef);
+
+            // Scroll to bottom initially
+            await ScrollToBottom();
+        }
+    }
+
+    [JSInvokable]
+    public async Task SendFromJs() => await SendAsync();
+
+    async Task SendAsync()
+    {
+        var text = Draft.Trim();
+        if (string.IsNullOrEmpty(text)) return;
+
+        Messages.Add(new("user", text));
+        Draft = "";
+        IsThinking = true;
+        StateHasChanged();
+
+        try
+        {
+            var reply = await ChatSvc.GetChatCompletionAsync(Messages);
+            Messages.Add(new("assistant", reply));
+        }
+        catch (Exception ex)
+        {
+            Messages.Add(new("assistant", $"⚠️ Error: {ex.Message}"));
+        }
+        finally
+        {
+            IsThinking = false;
+            await InvokeAsync(StateHasChanged);
+            await ScrollToBottom();
+        }
+    }
+
+    async Task ScrollToBottom()
+    {
+        // relies on window.scrollChatToBottom in site.js
+        await JS.InvokeVoidAsync("scrollChatToBottom");
+    }
+
+    public void Dispose()
+    {
+        _dotRef?.Dispose();
+    }
+}

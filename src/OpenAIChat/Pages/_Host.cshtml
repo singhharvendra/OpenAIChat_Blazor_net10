@@ -1,0 +1,27 @@
+@page "/"
+@namespace OpenAIChat.Pages
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OpenAI Chat • Blazor</title>
+    <base href="~/" />
+    <link href="css/site.css" rel="stylesheet" />
+</head>
+<body class="bg">
+    <div id="app">
+        <component type="typeof(App)" render-mode="ServerPrerendered" />
+    </div>
+
+    <!-- Make sure this is present -->
+    <script src="js/site.js"></script>
+
+    <!-- Blazor runtime -->
+    <script src="_framework/blazor.server.js"></script>
+</body>
+</html>
