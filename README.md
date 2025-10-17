@@ -33,8 +33,11 @@ $env:OPENAI_MODEL = "gpt-4o-mini"
 
 # macOS/Linux
 export OPENAI_API_KEY="sk-your-key"
+
 export OPENAI_MODEL="gpt-4o-mini"
+
 dotnet restore
+
 dotnet run --project src/OpenAIChat/OpenAIChat.csproj
 
 # Example Prompt
