@@ -44,6 +44,7 @@ dotnet run --project src/OpenAIChat/OpenAIChat.csproj
 # Example Prompt
 
 “Tell me a fun fact about Blazor.”
+
 “Summarize .NET 10’s new features in one paragraph.”
 
 # Tech Stack
