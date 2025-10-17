@@ -25,7 +25,7 @@ Talk naturally with AI through a clean, interactive interface featuring smooth a
 1. **Clone the repository:**
    ```bash
    git clone https://github.com/singhharvendra/OpenAIChat_Blazor_net10.git
-   cd OpenAIChat_Blazor_net10.git
+   cd OpenAIChat_Blazor_net10
    
 # Windows (PowerShell)
 $env:OPENAI_API_KEY = "sk-your-key"
