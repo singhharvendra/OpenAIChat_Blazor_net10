@@ -29,6 +29,7 @@ Talk naturally with AI through a clean, interactive interface featuring smooth a
    
 # Windows (PowerShell)
 $env:OPENAI_API_KEY = "sk-your-key"
+
 $env:OPENAI_MODEL = "gpt-4o-mini"
 
 # macOS/Linux
