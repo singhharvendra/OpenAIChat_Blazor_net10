@@ -190,20 +190,25 @@ docker build -f src/OpenAIChat/Dockerfile -t openaichatblazornet10:v1 .
 
 Windows
 
-docker build -f src/OpenAIChat/Dockerfile -t openaichatblazornet10:v1 .
+docker build -f src\OpenAIChat\Dockerfile -t openaichatblazornet10:v1 .
+
+#Check Images and Remove Unused
+docker images
+docker rmi <image_id>
 
 # Push Docker Image to ACR
 
 az acr login -n openaichatacr1019
-docker tag openaichatblazornet10:v1 openaichatacr.azurecr.io/openaichatblazornet10:v1
+docker tag openaichatblazornet10:v1 openaichatacr1019.azurecr.io/openaichatblazornet10:v1
 docker push openaichatacr1019.azurecr.io/openaichatblazornet10:v1
 
+#Create App Service Plan and Web App (Linux)
 
-az appservice plan create --name chatapp-plan --resource-group chatapp-rg --sku B1 --is-linux
+az appservice plan create -g ai-chatbot -n chatapp-plan-1019 --sku F1 --is-linux
 
-az webapp create   --resource-group chatapp-rg   --plan chatapp-plan   --name openaichatdemo   --deployment-container-image-name openaichatblazornet10:v1
+az webapp create -g ai-chatbot -p chatapp-plan -n chatapp-plan-1019 --deployment-container-image-name openaichatacr1019.azurecr.io/openaichatblazornet10:v1
 
-az webapp config appsettings set   --resource-group chatapp-rg   --name openaichatdemo   --settings   AZURE_OPENAI_ENDPOINT="https://<your-resource>.openai.azure.com"   AZURE_OPENAI_API_KEY="<your-key>"   AZURE_OPENAI_DEPLOYMENT="gpt-4o-mini"   AZURE_OPENAI_API_VERSION="2024-08-01-preview"
+
 ```
 
 Then open:  

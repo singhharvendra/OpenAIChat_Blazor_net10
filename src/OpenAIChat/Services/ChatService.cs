@@ -20,8 +20,8 @@ namespace OpenAIChat.Services
         public async Task<string> GetChatCompletionAsync(List<ChatMessage> messages, CancellationToken ct = default)
         {
             // Prefer Azure OpenAI if configured
-            var azureEndpoint   = _cfg["AZURE_OPENAI_ENDPOINT"];
-            var azureKey        = _cfg["AZURE_OPENAI_API_KEY"];
+            var azureEndpoint = _cfg["AZURE_OPENAI_ENDPOINT"];
+            var azureKey = _cfg["AZURE_OPENAI_API_KEY"];
             var azureDeployment = _cfg["AZURE_OPENAI_DEPLOYMENT"];
             var azureApiVersion = _cfg["AZURE_OPENAI_API_VERSION"] ?? "2024-08-01-preview";
 
