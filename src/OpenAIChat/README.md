@@ -296,3 +296,9 @@ OpenAIChat_Blazor_net10/
 - **OpenAI / Azure OpenAI Chat API**
 - **HTML / CSS / JavaScript**
 - **Docker + Azure Web App (Linux)**
+
+---
+
+## 📄 License
+
+MIT License © 2025 Harvendra Singh

@@ -299,3 +299,6 @@ OpenAIChat_Blazor_net10/
 
 ---
 
+## 📄 License
+
+MIT License © 2025 Harvendra Singh
